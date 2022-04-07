@@ -30,6 +30,7 @@ jobs:
           ldd ykcs11/libykcs11.so | grep libcrypto.so
 
           ./tool/yubico-piv-tool --help | grep "Usage: yubico-piv-tool"
+          objdump -T ykcs11/libykcs11.so | grep C_Sign
           pkcs11-tool --module ykcs11/libykcs11.so --show-info | grep Yubico
 
           sudo make install
@@ -37,10 +38,7 @@ jobs:
 
           yubico-piv-tool --help | grep "Usage: yubico-piv-tool"
 
-          sudo find /usr -name "libykcs11.so"
-
-          objdump -T /usr/local/lib/libykcs11.so | grep C_Sign
-          pkcs11-tool --module /usr/local/lib/libykcs11.so --show-info | grep Yubico
+          ls /usr/lib
 
           cd /usr/local
           sudo rm bin/yubico-piv-tool
