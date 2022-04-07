@@ -20,12 +20,12 @@ jobs:
       - name: Build and install
         run: |
           set -x
-          cmake -L | grep CMAKE_INSTALL_PREFIX
-          cmake -L | grep CMAKE_INSTALL_LIBDIR
-          cmake -L | grep CMAKE_INSTALL_FULL_LIBDIR
 
           mkdir build; cd build
           cmake .. -DVERBOSE_CMAKE=ON
+
+          cmake -L
+
           make
           make test
 
