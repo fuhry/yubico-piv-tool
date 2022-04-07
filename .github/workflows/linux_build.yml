@@ -38,7 +38,7 @@ jobs:
 
           yubico-piv-tool --help | grep "Usage: yubico-piv-tool"
 
-          ls /usr/lib
+          cmake -L | grep CMAKE_INSTALL_PREFIX
 
           cd /usr/local
           sudo rm bin/yubico-piv-tool
