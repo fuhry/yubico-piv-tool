@@ -20,6 +20,10 @@ jobs:
       - name: Build and install
         run: |
           set -x
+          cmake -L | grep CMAKE_INSTALL_PREFIX
+          cmake -L | grep CMAKE_INSTALL_LIBDIR
+          cmake -L | grep CMAKE_INSTALL_FULL_LIBDIR
+
           mkdir build; cd build
           cmake .. -DVERBOSE_CMAKE=ON
           make
@@ -38,7 +42,6 @@ jobs:
 
           yubico-piv-tool --help | grep "Usage: yubico-piv-tool"
 
-          cmake -L | grep CMAKE_INSTALL_PREFIX
           ls /usr/local/lib
 
           cd /usr/local
