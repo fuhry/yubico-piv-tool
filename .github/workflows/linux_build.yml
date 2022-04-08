@@ -22,7 +22,8 @@ jobs:
           set -x
 
           cmake -L
-          
+          cmake --version
+
           mkdir build; cd build
           cmake .. -DVERBOSE_CMAKE=ON
 
