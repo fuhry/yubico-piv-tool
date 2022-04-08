@@ -21,6 +21,8 @@ jobs:
         run: |
           set -x
 
+          cmake -L
+          
           mkdir build; cd build
           cmake .. -DVERBOSE_CMAKE=ON
 
