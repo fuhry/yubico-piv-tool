@@ -21,14 +21,11 @@ jobs:
         run: |
           set -x
 
-          cmake -L
-          cmake --version
+          LIBDIR=$(cmake -L | sed -n "s/^.*YKPIV_INSTALL_LIB_DIR:PATH=\s*\(\S*\).*$/\1/p")
+          BINDIR=$(cmake -L | sed -n "s/^.*YKPIV_INSTALL_BIN_DIR:PATH=\s*\(\S*\).*$/\1/p")
 
           mkdir build; cd build
           cmake .. -DVERBOSE_CMAKE=ON
-
-          cmake -L
-
           make
           make test
 
@@ -37,7 +34,6 @@ jobs:
           ldd ykcs11/libykcs11.so | grep libcrypto.so
 
           ./tool/yubico-piv-tool --help | grep "Usage: yubico-piv-tool"
-          objdump -T ykcs11/libykcs11.so | grep C_Sign
           pkcs11-tool --module ykcs11/libykcs11.so --show-info | grep Yubico
 
           sudo make install
@@ -45,11 +41,11 @@ jobs:
 
           yubico-piv-tool --help | grep "Usage: yubico-piv-tool"
 
-          ls /usr/local/lib
+          objdump -T $LIBDIR/libykcs11.so | grep C_Sign
+          pkcs11-tool --module $LIBDIR/libykcs11.so --show-info | grep Yubico
 
-          cd /usr/local
-          sudo rm bin/yubico-piv-tool
-          sudo rm lib/libyk*
+          sudo rm $BINDIR/yubico-piv-tool
+          sudo rm $LIBDIR/libyk*
 
       - name: Build and install debian package
         run: |
