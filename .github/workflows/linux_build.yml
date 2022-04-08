@@ -21,9 +21,6 @@ jobs:
         run: |
           set -x
 
-          LIBDIR=$(cmake -L | sed -n "s/^.*YKPIV_INSTALL_LIB_DIR:PATH=\s*\(\S*\).*$/\1/p")
-          BINDIR=$(cmake -L | sed -n "s/^.*YKPIV_INSTALL_BIN_DIR:PATH=\s*\(\S*\).*$/\1/p")
-
           mkdir build; cd build
           cmake .. -DVERBOSE_CMAKE=ON
           make
@@ -40,6 +37,13 @@ jobs:
           sudo ldconfig
 
           yubico-piv-tool --help | grep "Usage: yubico-piv-tool"
+
+          cd ..
+          LIBDIR=$(cmake -L | sed -n "s/^.*YKPIV_INSTALL_LIB_DIR:PATH=\s*\(\S*\).*$/\1/p")
+          BINDIR=$(cmake -L | sed -n "s/^.*YKPIV_INSTALL_BIN_DIR:PATH=\s*\(\S*\).*$/\1/p")
+
+          echo "lib_path: $LIBDIR"
+          echo "bin_path: $BINDIR"
 
           objdump -T $LIBDIR/libykcs11.so | grep C_Sign
           pkcs11-tool --module $LIBDIR/libykcs11.so --show-info | grep Yubico
